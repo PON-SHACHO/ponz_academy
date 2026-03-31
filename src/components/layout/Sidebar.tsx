@@ -6,10 +6,11 @@ import {
   Users, 
   BarChart3, 
   HelpCircle, 
-  LogOut,
   ChevronRight
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
+
+import AdminLogoutButton from '@/components/AdminLogoutButton';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/' },
@@ -53,10 +54,7 @@ export default function Sidebar() {
           <HelpCircle size={18} strokeWidth={1.5} />
           <span>Support</span>
         </Link>
-        <button className={styles.footerLink}>
-          <LogOut size={18} strokeWidth={1.5} />
-          <span>Logout</span>
-        </button>
+        <AdminLogoutButton className={styles.footerLink} />
       </div>
     </aside>
   );

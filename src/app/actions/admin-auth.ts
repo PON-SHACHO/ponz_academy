@@ -27,7 +27,7 @@ export async function adminLogin(
   const cookieStore = await cookies();
   cookieStore.set(ADMIN_COOKIE_NAME, token, getAdminCookieOptions());
 
-  redirect('/admin/editor');
+  redirect('/');
 }
 
 export async function adminLogout() {
