@@ -1,0 +1,136 @@
+.sidebar {
+  width: 280px;
+  background-color: hsl(var(--background));
+  border-right: 1px solid hsl(var(--border));
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 1.5rem;
+  overflow-y: auto;
+}
+
+.logo {
+  margin-bottom: 3.5rem;
+  padding-left: 0.5rem;
+}
+
+.logoText {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--primary));
+}
+
+.sectionLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+  padding-left: 1rem;
+}
+
+.nav {
+  flex: 1;
+}
+
+.navList {
+  list-style: none;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius);
+  color: hsl(var(--foreground));
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.navLink:hover {
+  background-color: hsl(var(--secondary) / 0.15);
+  color: hsl(var(--primary));
+}
+
+/* Active style would be added here */
+
+.upgradeCard {
+  background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.6) 100%);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: hsl(var(--primary));
+}
+
+.upgradeCard h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.upgradeCard p {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+}
+
+.upgradeBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: calc(var(--radius) / 2);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(var(--primary));
+  transition: transform 0.2s ease;
+}
+
+.upgradeBtn:hover {
+  transform: scale(1.02);
+}
+
+.footer {
+  border-top: 1px solid hsl(var(--border) / 0.5);
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footerLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.footerLink:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--foreground));
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none; /* Mobile menu logic should be implemented later */
+  }
+}

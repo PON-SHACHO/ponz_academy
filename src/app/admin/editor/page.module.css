@@ -1,0 +1,356 @@
+.adminLayout {
+  display: flex;
+  height: 100vh;
+  background-color: #F8F9FA;
+  overflow: hidden;
+}
+
+.adminSidebar {
+  width: 260px;
+  background-color: white;
+  border-right: 1px solid #E9ECEF;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+
+.adminLogo {
+  margin-bottom: 3rem;
+  padding-left: 1rem;
+}
+
+.logoMain {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2D4F4F;
+}
+
+.logoSub {
+  display: block;
+  font-size: 0.75rem;
+  color: #ABB5BA;
+  font-weight: 500;
+}
+
+.adminNav {
+  flex: 1;
+}
+
+.navList {
+  list-style: none;
+}
+
+.navList li a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #495057;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  margin-bottom: 0.25rem;
+}
+
+.navList li.active a {
+  background-color: #E8F6F6;
+  color: #2D4F4F;
+  font-weight: 600;
+}
+
+.sidebarFooter {
+  border-top: 1px solid #E9ECEF;
+  padding-top: 1.5rem;
+}
+
+.newPostBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2D4F4F;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footerLinks a, .logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: #ABB5BA;
+  width: 100%;
+}
+
+.editorMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #FDFCF8;
+}
+
+.editorHeader {
+  height: 64px;
+  background-color: white;
+  border-bottom: 1px solid #E9ECEF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.breadCrumbs {
+  font-size: 0.85rem;
+  color: #ABB5BA;
+}
+
+.separator {
+  margin: 0 0.5rem;
+}
+
+.current {
+  color: #2D4F4F;
+  font-weight: 600;
+}
+
+.editorActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.primaryBtn {
+  background-color: #2D4F4F;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.secondaryBtn {
+  border: 1px solid #E9ECEF;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editorContent {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  overflow: hidden;
+}
+
+.writingArea {
+  padding: 4rem 8rem;
+  overflow-y: auto;
+  background-color: white;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.titleInput {
+  width: 100%;
+  font-size: 2.5rem;
+  border: none;
+  font-weight: 700;
+  color: #2D4F4F;
+  margin-bottom: 2rem;
+  outline: none;
+}
+
+.coverUpload {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background-color: #F8F9FA;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ABB5BA;
+  border: 2px dashed #E9ECEF;
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.richTextEditor {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #495057;
+}
+
+.placeholderText {
+  color: #ABB5BA;
+}
+
+.proTip {
+  background-color: #E8F6F6;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.tipContent strong {
+  display: block;
+  color: #2D4F4F;
+  margin-bottom: 0.25rem;
+}
+
+.tipContent p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #495057;
+}
+
+.editorToolbar {
+  position: sticky;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #212529;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  display: flex;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  width: fit-content;
+}
+
+.editorSettings {
+  background-color: white;
+  border-left: 1px solid #E9ECEF;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.settingsSection h4 {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #ABB5BA;
+  margin-bottom: 1.5rem;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.8rem;
+  color: #ABB5BA;
+  margin-bottom: 0.5rem;
+}
+
+.select {
+  border: 1px solid #E9ECEF;
+  padding: 0.75rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid #E9ECEF;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.fieldRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.toggle {
+  width: 40px;
+  height: 20px;
+  background-color: #E9ECEF;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left 0.2s;
+}
+
+.toggle[data-active="true"] {
+  background-color: #2D4F4F;
+}
+
+.toggle[data-active="true"]::after {
+  left: 22px;
+}
+
+.publishingStatus {
+  background-color: #F8F9FA;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.scheduleBtn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #E8F6F6;
+  color: #2D4F4F;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.deleteBtn {
+  margin-top: auto;
+  color: #DC3545;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
