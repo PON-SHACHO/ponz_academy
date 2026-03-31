@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSessionToken } from '@/lib/admin-session';
 import { ADMIN_COOKIE_NAME } from '@/lib/admin-session';
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 管理画面へのアクセス制限
