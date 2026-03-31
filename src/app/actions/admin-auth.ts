@@ -27,11 +27,11 @@ export async function adminLogin(
   const cookieStore = await cookies();
   cookieStore.set(ADMIN_COOKIE_NAME, token, getAdminCookieOptions());
 
-  redirect('/');
+  redirect('/admin/posts');
 }
 
 export async function adminLogout() {
   const cookieStore = await cookies();
   cookieStore.delete(ADMIN_COOKIE_NAME);
-  redirect('/');
+  redirect('/admin/login');
 }
