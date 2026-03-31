@@ -1,6 +1,5 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../src/generated/client"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -23,8 +22,10 @@ model Post {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  content     String   // 内容（Markdown or JSON string）
+  subtitle    String?
+  content     String   // Markdown or JSON
   coverImage  String?
+  readingTime String?
   published   Boolean  @default(false)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String

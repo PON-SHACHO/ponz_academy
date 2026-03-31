@@ -169,11 +169,81 @@
 .titleInput {
   width: 100%;
   font-size: 2.5rem;
-  border: none;
   font-weight: 700;
-  color: #2D4F4F;
-  margin-bottom: 2rem;
+  border: none;
   outline: none;
+  margin-bottom: 0.5rem;
+  color: #1a202c;
+  background: transparent;
+}
+
+.subtitleInput {
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  margin-bottom: 2rem;
+  color: #718096;
+  background: transparent;
+}
+
+.textArea {
+  width: 100%;
+  min-height: 400px;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  border: none;
+  outline: none;
+  resize: none;
+  color: #2d3748;
+  background: transparent;
+  font-family: inherit;
+}
+
+.urlInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.875rem;
+  color: #718096;
+  width: 100%;
+  text-align: center;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 0.5rem;
+  padding-right: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  appearance: none;
+  background: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.selectIcon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+  pointer-events: none;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .coverUpload {
