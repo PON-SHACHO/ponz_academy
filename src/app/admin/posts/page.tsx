@@ -3,11 +3,14 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 
+import AdminTabs from '@/components/admin/AdminTabs';
+
 export default async function AdminPosts() {
   const posts = await getPosts({ limit: 100 });
 
   return (
     <div className={styles.adminContainer}>
+      <AdminTabs />
       <header className={styles.adminHeader}>
         <h1>Posts Management</h1>
         <Link href="/admin/editor" className={styles.createBtn}>

@@ -1,0 +1,255 @@
+.adminContainer {
+  padding: 3rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: var(--font-outfit, sans-serif);
+}
+
+.headerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.consoleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fd2d78;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.shieldIcon {
+  color: #fd2d78;
+}
+
+.pageTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.titleIcon {
+  color: #fd2d78;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: #718096;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.statsCard {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(253, 45, 120, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 250px;
+}
+
+.statsLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a0aec0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.statsValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statsIcon {
+  color: #fd2d78;
+}
+
+.tableCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+  padding: 1rem 0;
+  overflow: hidden;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 1.5rem 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.table td {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: middle;
+}
+
+.identityCell {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f7fafc;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.avatarAdmin {
+  background-color: rgba(253, 45, 120, 0.1);
+  color: #fd2d78;
+}
+
+.userName {
+  font-weight: 700;
+  color: #1a202c;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.joinedDate {
+  font-size: 0.75rem;
+  color: #a0aec0;
+}
+
+.emailCell {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.roleBadge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  background-color: #edf2f7;
+  color: #4a5568;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.roleBadgeAdmin {
+  background-color: rgba(253, 45, 120, 0.1);
+  color: #fd2d78;
+}
+
+.actionGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.roleSelect {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4a5568;
+  background-color: white;
+  cursor: pointer;
+}
+
+.roleSelect:focus {
+  outline: none;
+  border-color: #fd2d78;
+  box-shadow: 0 0 0 2px rgba(253, 45, 120, 0.1);
+}
+
+.deleteBtn {
+  color: #a0aec0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteBtn:hover {
+  color: #e53e3e;
+}
+
+.emptyState {
+  text-align: center;
+  color: #718096;
+  font-size: 0.875rem;
+  padding: 3rem !important;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  color: #fd2d78;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .adminContainer {
+    padding: 1.5rem;
+  }
+  
+  .headerWrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .tableCard {
+    border-radius: 12px;
+  }
+  
+  .table th, .table td {
+    padding: 1rem;
+  }
+}
