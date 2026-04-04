@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { validateApiRequest, corsHeaders } from '@/lib/api-auth';
 
 export async function POST(request: Request) {
+  console.log(`[POSTS] POST request received: ${request.url}`);
   try {
     const auth = await validateApiRequest(request);
     
@@ -14,14 +15,14 @@ export async function POST(request: Request) {
     const { id, title, slug, subtitle, content, coverImage, readingTime, categoryId, published = true } = data;
 
     if (!title || !slug || !content || !categoryId) {
+      console.warn('[POSTS] Missing required fields in request');
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders });
     }
 
-    // Default admin ID
     const authorId = data.authorId || 'admin-id';
 
     if (id) {
-      // Update
+      console.log(`[POSTS] Updating post ID: ${id}`);
       await sql`
         UPDATE "Post"
         SET title = ${title}, slug = ${slug}, subtitle = ${subtitle}, 
@@ -32,9 +33,10 @@ export async function POST(request: Request) {
         WHERE id = ${id}
       `;
     } else {
-      // Create
+      console.log(`[POSTS] Creating new post with slug: ${slug}`);
       const existing = await sql`SELECT id FROM "Post" WHERE slug = ${slug} LIMIT 1`;
       if (existing.length > 0) {
+        console.warn(`[POSTS] Slug conflict: ${slug}`);
         return NextResponse.json({ error: 'Post with this slug already exists' }, { status: 409, headers: corsHeaders });
       }
 
@@ -48,16 +50,15 @@ export async function POST(request: Request) {
     revalidatePath('/admin/posts');
     revalidatePath(`/articles/${slug}`);
 
-    return NextResponse.json({ 
-      success: true, 
-      message: id ? 'Post updated' : 'Post created' 
-    }, { headers: corsHeaders });
+    console.log('[POSTS] Operation successful');
+    return NextResponse.json({ success: true, message: id ? 'Post updated' : 'Post created' }, { headers: corsHeaders });
   } catch (error) {
-    console.error('API Posts Error:', error);
+    console.error('[POSTS] ERROR:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500, headers: corsHeaders });
   }
 }
 
 export async function OPTIONS() {
+  console.log('[POSTS] OPTIONS received');
   return new NextResponse(null, { status: 204, headers: corsHeaders });
 }

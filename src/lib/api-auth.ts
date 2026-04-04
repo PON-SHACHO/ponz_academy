@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-API-Key',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-API-Key, X-WP-Nonce',
 };
 
 /**
@@ -14,8 +14,12 @@ export const corsHeaders = {
  * Returns the username if successful, otherwise returns a NextResponse with 401.
  */
 export async function validateApiRequest(request: Request) {
+  const url = new URL(request.url);
+  console.log(`[API AUTH] Processing request: ${request.method} ${url.pathname}`);
+
   // Handle CORS Preflight
   if (request.method === 'OPTIONS') {
+    console.log('[API AUTH] Handling OPTIONS preflight');
     return {
       isPreflight: true,
       response: new NextResponse(null, { status: 204, headers: corsHeaders })
@@ -25,7 +29,7 @@ export async function validateApiRequest(request: Request) {
   const authHeader = request.headers.get('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Basic ')) {
-    console.log('API Auth: Missing or invalid Authorization header');
+    console.warn('[API AUTH] Missing or invalid Authorization header');
     return {
       error: new NextResponse(
         JSON.stringify({ error: 'Authorization header is missing or invalid' }),
@@ -49,8 +53,10 @@ export async function validateApiRequest(request: Request) {
     const expectedUsername = process.env.API_USERNAME;
     const expectedPassword = process.env.API_APP_PASSWORD;
 
+    console.log(`[API AUTH] Credentials decoded for user: ${username}`);
+
     if (!expectedUsername || !expectedPassword) {
-      console.error('API Auth Error: API_USERNAME or API_APP_PASSWORD is not set in environment variables');
+      console.error('[API AUTH] CRITICAL: API_USERNAME or API_APP_PASSWORD is not set in environment variables');
       return {
         error: new NextResponse(
           JSON.stringify({ error: 'Server configuration error: Missing environment variables' }),
@@ -60,10 +66,11 @@ export async function validateApiRequest(request: Request) {
     }
 
     if (username === expectedUsername && password === expectedPassword) {
+      console.log(`[API AUTH] Authentication successful for: ${username}`);
       return { username };
     }
 
-    console.log(`API Auth: Invalid credentials for user ${username}`);
+    console.warn(`[API AUTH] Invalid credentials provided for: ${username}`);
     return {
       error: new NextResponse(
         JSON.stringify({ error: 'Invalid credentials' }),
@@ -78,7 +85,7 @@ export async function validateApiRequest(request: Request) {
       )
     };
   } catch (error) {
-    console.error('Auth Decoding Error:', error);
+    console.error('[API AUTH] Internal Error decoding credentials:', error);
     return {
       error: new NextResponse(
         JSON.stringify({ error: 'Failed to decode credentials' }),
