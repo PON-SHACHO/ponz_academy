@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import { Clock, Calendar, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { marked } from 'marked';
 
 export default async function ArticleDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -13,6 +14,13 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
     notFound();
   }
 
+  // Smart Hero Image: If article.coverImage is missing, try to find the first image in markdown
+  const imageMatch = article.content.match(/!\[.*?\]\((.*?)\)/);
+  const heroImage = article.coverImage || (imageMatch ? imageMatch[1] : '');
+
+  // Parse markdown content
+  const contentHtml = await marked.parse(article.content);
+  
   const recommendations = await getPosts({ limit: 3 });
 
   return (
@@ -40,16 +48,21 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
         </div>
       </header>
 
-      <div className={styles.heroImage}>
-        <img src={article.coverImage || ''} alt={article.title} />
-      </div>
+      {heroImage && (
+        <div className={styles.heroImage}>
+          <img src={heroImage} alt={article.title} />
+        </div>
+      )}
 
       <div className={styles.content}>
         <p className={styles.lead}>
           {article.subtitle}
         </p>
 
-        <div className={styles.mainText} dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br />') }} />
+        <div 
+          className={styles.mainText} 
+          dangerouslySetInnerHTML={{ __html: contentHtml }} 
+        />
       </div>
 
       <footer className={styles.footer}>

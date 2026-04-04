@@ -122,6 +122,55 @@
   border-left: 4px solid hsl(var(--secondary));
 }
 
+.mainText h1,
+.mainText h2,
+.mainText h3 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  color: hsl(var(--primary));
+}
+
+.mainText h2 {
+  font-size: 2rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+  padding-bottom: 0.5rem;
+}
+
+.mainText h3 {
+  font-size: 1.5rem;
+}
+
+.mainText p {
+  margin-bottom: 2rem;
+}
+
+.mainText img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin: 3rem 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.mainText ul, .mainText ol {
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.mainText li {
+  margin-bottom: 0.75rem;
+}
+
+.mainText blockquote {
+  border-left: 4px solid hsl(var(--secondary));
+  padding: 1.5rem 2rem;
+  margin: 3rem 0;
+  background-color: hsl(var(--accent) / 0.3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-style: italic;
+  font-size: 1.25rem;
+}
+
 .section {
   margin-bottom: 4rem;
 }
@@ -135,17 +184,6 @@
 
 .section p {
   margin-bottom: 2rem;
-}
-
-.section ul {
-  list-style: none;
-  padding-left: 1.5rem;
-}
-
-.section li {
-  position: relative;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
 }
 
 .section li::before {
