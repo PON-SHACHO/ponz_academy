@@ -48,7 +48,8 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
 export async function getPostByIdOrSlug(idOrSlug: string) {
   if (!idOrSlug) return null;
   
-  console.log(`[DB] Fetching post by ID or Slug: "${idOrSlug}"`);
+  const decoded = decodeURIComponent(idOrSlug);
+  console.log(`[DB] Fetching post by ID or Slug: "${decoded}" (original: "${idOrSlug}")`);
   try {
     // Specifically check for both. We cast to string to ensure type compatibility.
     const posts = await sql`
@@ -56,7 +57,7 @@ export async function getPostByIdOrSlug(idOrSlug: string) {
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
-      WHERE p.id::text = ${idOrSlug} OR p.slug = ${idOrSlug}
+      WHERE p.id::text = ${decoded} OR p.slug = ${decoded}
       LIMIT 1
     `;
     
