@@ -131,3 +131,19 @@ export async function savePost(data: Partial<Post>) {
     return { success: false, error: (error as Error).message };
   }
 }
+
+export async function deletePost(id: string) {
+  if (!id) return { success: false, error: 'ID is required' };
+  
+  console.log(`[DB] Deleting post with ID: ${id}`);
+  try {
+    await sql`DELETE FROM "Post" WHERE id = ${id}`;
+    
+    revalidatePath('/');
+    revalidatePath('/admin/posts');
+    return { success: true };
+  } catch (error) {
+    console.error(`[DB] Failed to delete post ${id}:`, error);
+    return { success: false, error: (error as Error).message };
+  }
+}

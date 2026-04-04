@@ -1,7 +1,8 @@
 import { getPosts } from '@/app/actions/post-actions';
 import styles from './page.module.css';
 import Link from 'next/link';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit } from 'lucide-react';
+import DeletePostButton from '@/components/admin/DeletePostButton';
 
 import AdminTabs from '@/components/admin/AdminTabs';
 
@@ -45,9 +46,7 @@ export default async function AdminPosts() {
                   <Link href={`/admin/editor?id=${post.id}`} className={styles.editBtn}>
                     <Edit size={16} />
                   </Link>
-                  <button className={styles.deleteBtn}>
-                    <Trash2 size={16} />
-                  </button>
+                  <DeletePostButton postId={post.id} className={styles.deleteBtn} />
                 </td>
               </tr>
             ))}
