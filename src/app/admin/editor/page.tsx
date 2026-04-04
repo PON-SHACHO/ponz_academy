@@ -12,9 +12,10 @@ import Link from 'next/link';
 import AdminLogoutButton from '@/components/AdminLogoutButton';
 import EditorForm from '@/components/admin/EditorForm';
 
-export default async function AdminEditor({ searchParams }: { searchParams: { id?: string } }) {
+export default async function AdminEditor({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+  const { id } = await searchParams;
   const [post, categories] = await Promise.all([
-    searchParams.id ? getPostByIdOrSlug(searchParams.id) : null,
+    id ? getPostByIdOrSlug(id) : null,
     getCategories()
   ]);
 

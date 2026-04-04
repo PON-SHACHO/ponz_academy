@@ -3,8 +3,9 @@ import styles from './page.module.css';
 import { Bookmark, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default async function Dashboard({ searchParams }: { searchParams: { category?: string } }) {
-  const selectedCategory = searchParams.category || 'すべて';
+export default async function Dashboard({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const { category } = await searchParams;
+  const selectedCategory = category || 'すべて';
   
   const [categoriesData, posts] = await Promise.all([
     getCategories(),
