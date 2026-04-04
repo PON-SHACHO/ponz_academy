@@ -18,8 +18,14 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
   const imageMatch = article.content.match(/!\[.*?\]\((.*?)\)/);
   const heroImage = article.coverImage || (imageMatch ? imageMatch[1] : '');
 
+  // Deduplication: If the first image was used as the hero, remove it from the body
+  let cleanedContent = article.content;
+  if (!article.coverImage && imageMatch) {
+    cleanedContent = article.content.replace(imageMatch[0], '');
+  }
+
   // Parse markdown content
-  const contentHtml = await marked.parse(article.content);
+  const contentHtml = await marked.parse(cleanedContent);
   
   const recommendations = await getPosts({ limit: 3 });
 

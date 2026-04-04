@@ -28,6 +28,10 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
       `;
       return posts as unknown as Post[];
     }
+    const categoryFilter = options?.categorySlug && options.categorySlug !== 'すべて'
+      ? sql`AND (c.name = ${options.categorySlug} OR c.slug = ${options.categorySlug})`
+      : sql``;
+    const limit = options?.limit || 10;
 
     const posts = await sql`
       SELECT p.*, c.name as "categoryName", u.name as "authorName"
@@ -35,10 +39,23 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
       WHERE p.published = true
+      ${categoryFilter}
       ORDER BY p."createdAt" DESC
-      LIMIT ${options?.limit || 10}
+      LIMIT ${limit}
     `;
-    return posts as unknown as Post[];
+
+    // Smart Image Extraction for list view
+    const mappedPosts = posts.map(p => {
+      if (!p.coverImage && p.content) {
+        const imageMatch = p.content.match(/!\[.*?\]\((.*?)\)/);
+        if (imageMatch) {
+          p.coverImage = imageMatch[1];
+        }
+      }
+      return p;
+    });
+
+    return mappedPosts as unknown as Post[];
   } catch (error) {
     console.error('Failed to fetch posts:', error);
     return [];
