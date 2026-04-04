@@ -1,11 +1,11 @@
-import { getPostBySlug, getPosts } from '@/app/actions/post-actions';
+import { getPostByIdOrSlug, getPosts } from '@/app/actions/post-actions';
 import styles from './page.module.css';
 import { Clock, Calendar, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 export default async function ArticleDetail({ params }: { params: { id: string } }) {
-  const article = await getPostBySlug(params.id);
+  const article = await getPostByIdOrSlug(params.id);
   
   if (!article) {
     notFound();

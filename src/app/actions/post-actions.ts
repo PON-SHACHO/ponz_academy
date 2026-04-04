@@ -45,14 +45,14 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
   }
 }
 
-export async function getPostBySlug(slug: string) {
+export async function getPostByIdOrSlug(idOrSlug: string) {
   try {
     const posts = await sql`
       SELECT p.*, c.name as "categoryName", u.name as "authorName"
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
-      WHERE p.slug = ${slug}
+      WHERE p.id = ${idOrSlug} OR p.slug = ${idOrSlug}
       LIMIT 1
     `;
     return (posts[0] as unknown as Post) || null;

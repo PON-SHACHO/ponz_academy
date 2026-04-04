@@ -1,4 +1,4 @@
-import { getPostBySlug, getCategories } from '@/app/actions/post-actions';
+import { getPostByIdOrSlug, getCategories } from '@/app/actions/post-actions';
 import styles from './page.module.css';
 import {
   LayoutDashboard,
@@ -14,7 +14,7 @@ import EditorForm from '@/components/admin/EditorForm';
 
 export default async function AdminEditor({ searchParams }: { searchParams: { id?: string } }) {
   const [post, categories] = await Promise.all([
-    searchParams.id ? getPostBySlug(searchParams.id) : null,
+    searchParams.id ? getPostByIdOrSlug(searchParams.id) : null,
     getCategories()
   ]);
 
