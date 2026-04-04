@@ -46,18 +46,29 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
 }
 
 export async function getPostByIdOrSlug(idOrSlug: string) {
+  if (!idOrSlug) return null;
+  
+  console.log(`[DB] Fetching post by ID or Slug: "${idOrSlug}"`);
   try {
+    // Specifically check for both. We cast to string to ensure type compatibility.
     const posts = await sql`
       SELECT p.*, c.name as "categoryName", u.name as "authorName"
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
-      WHERE p.id = ${idOrSlug} OR p.slug = ${idOrSlug}
+      WHERE p.id::text = ${idOrSlug} OR p.slug = ${idOrSlug}
       LIMIT 1
     `;
+    
+    if (posts.length === 0) {
+      console.warn(`[DB] No post found for "${idOrSlug}"`);
+      return null;
+    }
+    
+    console.log(`[DB] Found post: ${posts[0].title} (slug: ${posts[0].slug})`);
     return (posts[0] as unknown as Post) || null;
   } catch (error) {
-    console.error('Failed to fetch post:', error);
+    console.error(`[DB] ERROR fetching post "${idOrSlug}":`, error);
     return null;
   }
 }
