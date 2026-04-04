@@ -26,8 +26,10 @@ export async function POST(request: Request) {
     
     // WordPress uses 'slug'
     const slug = data.slug || title.toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
+      .trim()
+      .replace(/[\s\t\n_-]+/g, '-') 
+      .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF-]/g, '')
+      .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '');
 
     // --- Dynamic ID Resolution ---

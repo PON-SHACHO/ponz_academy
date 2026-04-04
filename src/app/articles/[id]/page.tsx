@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 export default async function ArticleDetail({ params }: { params: { id: string } }) {
-  const article = await getPostByIdOrSlug(params.id);
+  const decodedId = decodeURIComponent(params.id);
+  const article = await getPostByIdOrSlug(decodedId);
   
   if (!article) {
     notFound();

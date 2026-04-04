@@ -46,8 +46,14 @@ export default function EditorForm({ initialPost, categories }: EditorFormProps)
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (field === 'title' && !initialPost) {
        // Auto-generate slug from title if it's a new post
-       const slug = value.toLowerCase().replace(/[^a-z0-1]/g, '-').slice(0, 50);
-       setFormData(prev => ({ ...prev, slug }));
+        const slug = value.toLowerCase()
+           .trim()
+           .replace(/[\s\t\n]+/g, '-') // Replace whitespace with hyphen
+           .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF-]/g, '') // Allow Alphanumeric + Japanese (Hiragana, Katakana, Kanji) + Hyphens
+           .replace(/-+/g, '-') // collapse multiple hyphens
+           .replace(/^-+|-+$/g, '') // trim hyphens
+           .slice(0, 50);
+        setFormData(prev => ({ ...prev, slug }));
     }
   };
 
