@@ -15,8 +15,6 @@ export async function POST(request: Request) {
     console.log('[POSTS] Received data keys:', Object.keys(data));
 
     // --- WordPress Field Mapping ---
-    // WordPress sends 'title' and 'content' as objects with 'rendered' (for GET) 
-    // but for POST, it might be just a string OR an object depending on the tool.
     const rawTitle = typeof data.title === 'object' ? data.title.rendered : data.title;
     const rawContent = typeof data.content === 'object' ? data.content.rendered : data.content;
     
@@ -32,11 +30,16 @@ export async function POST(request: Request) {
       .replace(/[\s_-]+/g, '-')
       .replace(/^-+|-+$/g, '');
 
+    // --- Dynamic ID Resolution ---
+    // Instead of hardcoding 'admin-id', fetch the first available user.
+    const users = await sql`SELECT id FROM "User" WHERE role = 'ADMIN' LIMIT 1`;
+    const fallbackUsers = await sql`SELECT id FROM "User" LIMIT 1`;
+    const authorId = users[0]?.id || fallbackUsers[0]?.id || 'admin-id';
+
     // WordPress sends 'categories' as an array of IDs (integers)
-    // We need our internal UUID categoryId
+    // We need our internal UUID categoryId. Fetch first category if not specified.
     let categoryId = data.categoryId;
     if (!categoryId) {
-      // If categories array is provided, or if we just want to pick a default
       const categories = await sql`SELECT id FROM "Category" LIMIT 1`;
       if (categories.length > 0) {
         categoryId = categories[0].id;
@@ -48,7 +51,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields (title, content, or categoryId mapping failed)' }, { status: 400, headers: corsHeaders });
     }
 
-    const authorId = data.authorId || 'admin-id';
     const subtitle = data.subtitle || "";
     const coverImage = data.coverImage || data.featured_media_url || null;
     const readingTime = data.readingTime || null;
@@ -76,9 +78,17 @@ export async function POST(request: Request) {
       `;
     }
 
+    // --- Forced Revalidation ---
     revalidatePath('/');
     revalidatePath('/admin/posts');
     revalidatePath(`/articles/${slug}`);
+    
+    // Also revalidate categories because the Home page list is often filtered by category
+    const allCategories = await sql`SELECT name, slug FROM "Category"`;
+    allCategories.forEach(cat => {
+      revalidatePath(`/?category=${cat.name}`);
+      revalidatePath(`/?category=${cat.slug}`);
+    });
 
     console.log('[POSTS] Operation successful');
     return NextResponse.json({ success: true, message: 'Operation successful' }, { headers: corsHeaders });
