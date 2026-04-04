@@ -8,6 +8,7 @@ export async function GET(request: Request) {
     
     if (auth.isPreflight) return auth.response;
     if (auth.error) return auth.error;
+    if (!auth.username) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     // Return the authenticated user profile in WordPress format
     // This satisfies the connection check that verifying identity.
