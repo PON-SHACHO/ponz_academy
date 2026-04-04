@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/_next') || 
     pathname.startsWith('/api') ||
+    pathname.startsWith('/wp-json') ||
     pathname.includes('.')
   ) {
     return NextResponse.next();
@@ -60,5 +61,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api|wp-json|_next/static|_next/image|favicon.ico).*)'],
 };
