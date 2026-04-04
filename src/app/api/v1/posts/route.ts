@@ -42,10 +42,11 @@ export async function POST(request: Request) {
     // We need our internal UUID categoryId. Fetch first category if not specified.
     let categoryId = data.categoryId;
     if (!categoryId) {
-      const categories = await sql`SELECT id FROM "Category" LIMIT 1`;
-      if (categories.length > 0) {
-        categoryId = categories[0].id;
+      let categories = await sql`SELECT id FROM "Category" WHERE name = 'すべて' LIMIT 1`;
+      if (categories.length === 0) {
+        categories = await sql`SELECT id FROM "Category" LIMIT 1`;
       }
+      categoryId = categories[0]?.id;
     }
 
     if (!title || !slug || !content || !categoryId) {

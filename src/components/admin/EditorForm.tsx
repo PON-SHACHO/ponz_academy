@@ -21,7 +21,7 @@ export default function EditorForm({ initialPost, categories }: EditorFormProps)
       slug: '',
       subtitle: '',
       content: '',
-      categoryId: categories[0]?.id || '',
+      categoryId: categories.find(c => c.name === 'すべて')?.id || categories[0]?.id || '',
       published: true,
     }
   );
