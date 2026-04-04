@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db-neon';
 import { revalidatePath } from 'next/cache';
-import { validateApiRequest } from '@/lib/api-auth';
+import { validateApiRequest, corsHeaders } from '@/lib/api-auth';
 
 export async function POST(request: Request) {
   try {
     const auth = await validateApiRequest(request);
-    if (auth.error) {
-      return auth.error;
-    }
+    
+    if (auth.isPreflight) return auth.response;
+    if (auth.error) return auth.error;
 
     const data = await request.json();
     const { id, title, slug, subtitle, content, coverImage, readingTime, categoryId, published = true } = data;
 
     if (!title || !slug || !content || !categoryId) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders });
     }
 
-    // Use the authenticated user's ID or a default admin ID
+    // Default admin ID
     const authorId = data.authorId || 'admin-id';
 
     if (id) {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       // Create
       const existing = await sql`SELECT id FROM "Post" WHERE slug = ${slug} LIMIT 1`;
       if (existing.length > 0) {
-        return NextResponse.json({ error: 'Post with this slug already exists' }, { status: 409 });
+        return NextResponse.json({ error: 'Post with this slug already exists' }, { status: 409, headers: corsHeaders });
       }
 
       await sql`
@@ -48,9 +48,16 @@ export async function POST(request: Request) {
     revalidatePath('/admin/posts');
     revalidatePath(`/articles/${slug}`);
 
-    return NextResponse.json({ success: true, message: id ? 'Post updated' : 'Post created' });
+    return NextResponse.json({ 
+      success: true, 
+      message: id ? 'Post updated' : 'Post created' 
+    }, { headers: corsHeaders });
   } catch (error) {
     console.error('API Posts Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500, headers: corsHeaders });
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
 }

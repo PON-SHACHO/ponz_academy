@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { corsHeaders } from '@/lib/api-auth';
 
 export async function GET() {
   return NextResponse.json({
@@ -20,5 +21,9 @@ export async function GET() {
         "methods": ["GET"]
       }
     }
-  });
+  }, { headers: corsHeaders });
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
 }

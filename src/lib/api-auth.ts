@@ -1,17 +1,42 @@
 import { NextResponse } from 'next/server';
 
 /**
+ * Common CORS headers for the API.
+ */
+export const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-API-Key',
+};
+
+/**
  * Validates a request against the configured Basic Auth credentials.
  * Returns the username if successful, otherwise returns a NextResponse with 401.
  */
 export async function validateApiRequest(request: Request) {
+  // Handle CORS Preflight
+  if (request.method === 'OPTIONS') {
+    return {
+      isPreflight: true,
+      response: new NextResponse(null, { status: 204, headers: corsHeaders })
+    };
+  }
+
   const authHeader = request.headers.get('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Basic ')) {
+    console.log('API Auth: Missing or invalid Authorization header');
     return {
-      error: NextResponse.json(
-        { error: 'Authorization header is missing or invalid' },
-        { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="API"' } }
+      error: new NextResponse(
+        JSON.stringify({ error: 'Authorization header is missing or invalid' }),
+        { 
+          status: 401, 
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'WWW-Authenticate': 'Basic realm="API"' 
+          } 
+        }
       )
     };
   }
@@ -25,9 +50,12 @@ export async function validateApiRequest(request: Request) {
     const expectedPassword = process.env.API_APP_PASSWORD;
 
     if (!expectedUsername || !expectedPassword) {
-      console.warn('API credentials are not configured in environment variables');
+      console.error('API Auth Error: API_USERNAME or API_APP_PASSWORD is not set in environment variables');
       return {
-        error: NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+        error: new NextResponse(
+          JSON.stringify({ error: 'Server configuration error: Missing environment variables' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
       };
     }
 
@@ -35,16 +63,27 @@ export async function validateApiRequest(request: Request) {
       return { username };
     }
 
+    console.log(`API Auth: Invalid credentials for user ${username}`);
     return {
-      error: NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="API"' } }
+      error: new NextResponse(
+        JSON.stringify({ error: 'Invalid credentials' }),
+        { 
+          status: 401, 
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'WWW-Authenticate': 'Basic realm="API"' 
+          } 
+        }
       )
     };
   } catch (error) {
     console.error('Auth Decoding Error:', error);
     return {
-      error: NextResponse.json({ error: 'Failed to decode credentials' }, { status: 400 })
+      error: new NextResponse(
+        JSON.stringify({ error: 'Failed to decode credentials' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     };
   }
 }
