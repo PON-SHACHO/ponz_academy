@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 export async function getUsers() {
   try {
     const users = await sql`
-      SELECT id, name, email, role, "createdAt", "updatedAt"
+      SELECT id, name, email, role, bio, "createdAt", "updatedAt"
       FROM "User"
       ORDER BY "createdAt" ASC
     `;
@@ -16,6 +16,7 @@ export async function getUsers() {
       name: user.name as string | null,
       email: user.email as string,
       role: user.role as string,
+      bio: user.bio as string | null,
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     }));
