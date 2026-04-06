@@ -147,11 +147,39 @@
   color: #fd2d78;
 }
 
+.userBio {
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+.editFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.editInput {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1a202c;
+  width: 100%;
+}
+
+.editInput:focus {
+  outline: none;
+  border-color: #fd2d78;
+  box-shadow: 0 0 0 2px rgba(253, 45, 120, 0.1);
+}
+
 .userName {
   font-weight: 700;
   color: #1a202c;
   font-size: 0.875rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
 }
 
 .joinedDate {
@@ -183,7 +211,42 @@
 .actionGroup {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+}
+
+.saveBtn, .cancelBtn, .editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: none;
+  border: none;
+}
+
+.editBtn {
+  color: #a0aec0;
+}
+.editBtn:hover {
+  background-color: #edf2f7;
+  color: #4a5568;
+}
+
+.saveBtn {
+  color: #38a169;
+}
+.saveBtn:hover {
+  background-color: #f0fff4;
+}
+
+.cancelBtn {
+  color: #e53e3e;
+}
+.cancelBtn:hover {
+  background-color: #fff5f5;
 }
 
 .roleSelect {

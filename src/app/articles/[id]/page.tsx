@@ -45,7 +45,7 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Expert" alt={article.authorName || 'Expert'} className={styles.authorAvatar} />
           <div className={styles.authorInfo}>
             <span className={styles.authorName}>{article.authorName || '佐藤 健一'}</span>
-            <span className={styles.authorRole}>経営コンサルタント / 退職歯科医</span>
+            <span className={styles.authorRole}>{(article as any).authorBio || '経営コンサルタント / 退職歯科医'}</span>
           </div>
           <div className={styles.date}>
             <Calendar size={16} />

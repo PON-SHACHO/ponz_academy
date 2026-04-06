@@ -27,6 +27,9 @@ export default function LoginForm() {
       <button type="submit" className={styles.submitBtn} disabled={isPending}>
         {isPending ? 'ログイン中…' : 'ログイン'}
       </button>
+      <div className={styles.forgotPassWrapper}>
+        <a href="/forgot-password" className={styles.forgotPassLink}>パスワードを忘れた方はこちら</a>
+      </div>
     </form>
   );
 }

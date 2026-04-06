@@ -14,10 +14,6 @@ import MemberLogoutButton from '@/components/MemberLogoutButton';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/' },
-  { icon: Target, label: 'Marketing', href: '/marketing' },
-  { icon: TrendingUp, label: 'Clinic Growth', href: '/growth' },
-  { icon: Users, label: 'Staff Training', href: '/training' },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics' },
 ];
 
 export default function Sidebar() {
@@ -42,12 +38,6 @@ export default function Sidebar() {
           ))}
         </ul>
       </nav>
-
-      <div className={styles.upgradeCard}>
-        <h3>Upgrade Plan</h3>
-        <p>Get unlimited access to premium courses.</p>
-        <button className={styles.upgradeBtn}>Upgrade Now</button>
-      </div>
 
       <div className={styles.footer}>
         <Link href="/support" className={styles.footerLink}>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { updateUserRole, deleteUser } from '@/app/actions/user-actions';
-import { Trash2, Loader2, MoreVertical, ShieldCheck, User } from 'lucide-react';
+import { updateUserRole, deleteUser, updateUserProfile } from '@/app/actions/user-actions';
+import { Trash2, Loader2, Edit3, Check, X } from 'lucide-react';
 import styles from './page.module.css';
 
 type UserData = {
@@ -10,12 +10,16 @@ type UserData = {
   name: string | null;
   email: string;
   role: string;
+  bio: string | null;
   createdAt: string;
 };
 
 export default function UserTable({ initialUsers }: { initialUsers: UserData[] }) {
   const [users, setUsers] = useState(initialUsers);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editBio, setEditBio] = useState('');
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     setLoadingId(userId);
@@ -26,6 +30,24 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
       alert(result.error);
     }
     setLoadingId(null);
+  };
+
+  const handleUpdateProfile = async (userId: string) => {
+    setLoadingId(userId);
+    const result = await updateUserProfile(userId, { name: editName, bio: editBio });
+    if (result.success) {
+      setUsers(users.map(u => u.id === userId ? { ...u, name: editName, bio: editBio } : u));
+      setEditId(null);
+    } else {
+      alert(result.error);
+    }
+    setLoadingId(null);
+  };
+
+  const startEdit = (user: UserData) => {
+    setEditId(user.id);
+    setEditName(user.name || '');
+    setEditBio(user.bio || '');
   };
 
   const handleDelete = async (userId: string) => {
@@ -51,7 +73,7 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>IDENTITY</th>
+            <th>IDENTITY & BIO</th>
             <th>EMAIL</th>
             <th>CURRENT ROLE</th>
             <th>ACTIONS</th>
@@ -65,12 +87,27 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
                   <div className={`${styles.avatar} ${user.role === 'ADMIN' ? styles.avatarAdmin : ''}`}>
                     {getInitial(user.name, user.email)}
                   </div>
-                  <div>
-                    <div className={styles.userName}>{user.name || 'Unknown User'}</div>
-                    <div className={styles.joinedDate}>
-                      Joined {new Date(user.createdAt).toLocaleDateString()}
+                  {editId === user.id ? (
+                    <div className={styles.editFields}>
+                      <input 
+                        className={styles.editInput}
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        placeholder="氏名を入力"
+                      />
+                      <input 
+                        className={styles.editInput}
+                        value={editBio}
+                        onChange={(e) => setEditBio(e.target.value)}
+                        placeholder="肩書き/バイオを入力"
+                      />
                     </div>
-                  </div>
+                  ) : (
+                    <div>
+                      <div className={styles.userName}>{user.name || 'Unknown User'}</div>
+                      <div className={styles.userBio}>{user.bio || '肩書き未設定'}</div>
+                    </div>
+                  )}
                 </div>
               </td>
               <td className={styles.emailCell}>
@@ -84,8 +121,20 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
               <td className={styles.actionsCell}>
                 {loadingId === user.id ? (
                   <Loader2 size={16} className={styles.spin} />
+                ) : editId === user.id ? (
+                   <div className={styles.actionGroup}>
+                      <button onClick={() => handleUpdateProfile(user.id)} className={styles.saveBtn}>
+                        <Check size={18} />
+                      </button>
+                      <button onClick={() => setEditId(null)} className={styles.cancelBtn}>
+                        <X size={18} />
+                      </button>
+                   </div>
                 ) : (
                   <div className={styles.actionGroup}>
+                    <button onClick={() => startEdit(user)} className={styles.editBtn}>
+                      <Edit3 size={16} />
+                    </button>
                     <select 
                       className={styles.roleSelect}
                       value={user.role}

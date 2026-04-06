@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/layout/Sidebar";
-import Header from "@/components/layout/Header";
+import NavigationLayout from "@/components/layout/NavigationLayout";
 
 export const metadata: Metadata = {
   title: "ぽんずアカデミー | サロンオーナーのための集客とリピートの学校",
@@ -16,15 +15,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <div className="layout-root">
-          <Sidebar />
-          <div className="main-container">
-            <Header />
-            <main className="content">
-              {children}
-            </main>
-          </div>
-        </div>
+        <NavigationLayout>
+          {children}
+        </NavigationLayout>
         
         <style dangerouslySetInnerHTML={{ __html: `
           .layout-root {

@@ -46,6 +46,9 @@ export default function LoginForm() {
       </button>
       <div className={styles.switchAuth}>
         <p>アカウントをお持ちでないですか？ <a href="/register">新規登録</a></p>
+        <p className={styles.forgotPass}>
+          <a href="/forgot-password">パスワードを忘れた方はこちら</a>
+        </p>
       </div>
     </form>
   );

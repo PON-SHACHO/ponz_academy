@@ -70,7 +70,7 @@ export async function getPostByIdOrSlug(idOrSlug: string) {
   try {
     // Specifically check for both. We cast to string to ensure type compatibility.
     const posts = await sql`
-      SELECT p.*, c.name as "categoryName", u.name as "authorName"
+      SELECT p.*, c.name as "categoryName", u.name as "authorName", u.bio as "authorBio"
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
