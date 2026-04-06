@@ -2,8 +2,14 @@ import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 import { validateApiRequest, corsHeaders } from '@/lib/api-auth';
 
+export async function GET() {
+  console.log('[MEDIA] Health check GET received');
+  return NextResponse.json({ status: 'ok', message: 'Media endpoint is live' }, { headers: corsHeaders });
+}
+
 export async function POST(request: Request) {
-  console.log(`[MEDIA] POST request received: ${request.url}`);
+  const url = new URL(request.url);
+  console.log(`[MEDIA] POST request started: ${request.method} ${url.pathname}`);
   try {
     const auth = await validateApiRequest(request);
 
