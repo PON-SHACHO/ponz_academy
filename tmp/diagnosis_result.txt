@@ -1,0 +1,36 @@
+=== FULL APPLICATION DIAGNOSIS ===
+1. Tables: ["User","Post","Category"]
+2. User columns: ["id:text","email:text","name:text","role:text","createdAt:timestamp with time zone","updatedAt:timestamp with time zone","password:text","bio:text"]
+3. Post columns: ["id:text","title:text","slug:text","subtitle:text","content:text","coverImage:text","readingTime:text","published:boolean","authorId:text","categoryId:text","createdAt:timestamp with time zone","updatedAt:timestamp with time zone"]
+4. Category columns: ["id:text","name:text","slug:text"]
+5. Counts: Users=4 Posts=7 Categories=5
+6. Posts (7):
+   [PUB] title="「頑張れば報われる」は一人サロンを潰す。リピート率90%を実現した『数字で経営する』思考法" slug="頑張れば報われるは一人サロンを潰すリピート率90を実現した数字で経営する思考法" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="施術を「痛み取り」で売り続ける限り、1人サロン経営者は一生この罠から出られない" slug="施術を痛み取りで売り続ける限り1人サロン経営者は一生この罠から出られない" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="「また戻るんでしょ」という沈黙を放置していた私が、リピート率90%・新規次回予約率8割を実現した心理アプローチの全貌" slug="また戻るんでしょという沈黙を放置していた私がリピート率90・新規次回予約率8割を実現した心理アプローチの全貌" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="予約を「絞る」ほど売上が上がる。一人サロン経営者が知るべき、疲弊から抜け出す逆転の戦略" slug="予約を絞るほど売上が上がる一人サロン経営者が知るべき疲弊から抜け出す逆転の戦略" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="「自院が最高」と書くほど予約が減る理由｜売らずに選ばれる整体院のナラティブ発信術" slug="自院が最高と書くほど予約が減る理由売らずに選ばれる整体院のナラティブ発信術" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="紹介を頼むほど「紹介」が止まる？紹介者が一番恐れている『リスク』を消すのが先決だよ。" slug="紹介を頼むほど紹介が止まる紹介者が一番恐れているリスクを消すのが先決だよ" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+   [PUB] title="技術を磨くほど客が離れる逆説。2ヶ月先まで予約が埋まる「伴走型サロン」の作り方" slug="2" authorId="admin-id" catId="448864e4-4251-401e-98c6-68e759bd7880"
+7. Categories (5):
+   id="448864e4-4251-401e-98c6-68e759bd7880" name="すべて" slug="---"
+   id="533e2f9b-c66c-42cd-8658-92a2444d918e" name="財務・経営" slug="-----"
+   id="1f084a7c-8413-4258-ac3d-6d4587845ce6" name="人材育成" slug="----"
+   id="e481a7ba-fd81-4217-af60-250b6eb5ed9b" name="DX・IT" slug="dx-it"
+   id="37f02949-c529-44d5-a4df-fa1f532adef2" name="マインドセット" slug="-------"
+8. Users (4):
+   id="admin-id" email="admin@example.com" role="ADMIN" name="Admin User" bio="null"
+   id="9bf9788f-549e-4810-bb85-4d48b6842c93" email="we.share.co.ltd@gmail.com" role="ADMIN" name="かいぽん" bio="null"
+   id="cc8ee104-ee9d-4ef7-bf2e-a4f18884e22d" email="takimoto.kaita@gmail.com" role="MEMBER" name="テスト" bio="null"
+   id="0f955bf5-43e0-4e59-b030-7e48f8e42651" email="glabella.tak@gmail.com" role="MEMBER" name="テスト次郎" bio="null"
+9. Testing getPosts (published=true)...
+   Result: 7 posts
+   Keys: ["id","title","slug","subtitle","content","coverImage","readingTime","published","authorId","categoryId","createdAt","updatedAt","categoryName","authorName"]
+   First: slug="頑張れば報われるは一人サロンを潰すリピート率90を実現した数字で経営する思考法" title="「頑張れば報われる」は一人サロンを潰す。リピート率90%を実現した『数字で経営する』思考法"
+10. Testing getPostByIdOrSlug slug="頑張れば報われるは一人サロンを潰すリピート率90を実現した数字で経営する思考法"...
+   Result: 1 posts
+   Found: "「頑張れば報われる」は一人サロンを潰す。リピート率90%を実現した『数字で経営する』思考法"
+11. PasswordResetToken columns: []
+12. Checking orphan references...
+   OK: No orphan references found
+=== DIAGNOSIS COMPLETE ===

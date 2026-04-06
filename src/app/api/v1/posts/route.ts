@@ -25,12 +25,17 @@ export async function POST(request: Request) {
     const published = data.status === 'publish' || data.published === true || (data.status === undefined && data.published === undefined);
     
     // WordPress uses 'slug'
-    const slug = data.slug || title.toLowerCase()
+    let slug = data.slug || title.toLowerCase()
       .trim()
       .replace(/[\s\t\n_-]+/g, '-') 
       .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF-]/g, '')
       .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '');
+
+    // Robust Fallback: prevent empty or extremely short slugs
+    if (!slug || slug.length < 2) {
+      slug = `post-${Date.now().toString(36)}`;
+    }
 
     // --- Dynamic ID Resolution ---
     // Instead of hardcoding 'admin-id', fetch the first available user.

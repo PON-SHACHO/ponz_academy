@@ -42,10 +42,10 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
         </div>
         <h1 className={styles.title}>{article.title}</h1>
         <div className={styles.authorSection}>
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Expert" alt={article.authorName || 'Expert'} className={styles.authorAvatar} />
+          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${article.authorName || 'User'}`} alt={article.authorName || 'User'} className={styles.authorAvatar} />
           <div className={styles.authorInfo}>
-            <span className={styles.authorName}>{article.authorName || '佐藤 健一'}</span>
-            <span className={styles.authorRole}>{(article as any).authorBio || '経営コンサルタント / 退職歯科医'}</span>
+            <span className={styles.authorName}>{article.authorName || '管理者'}</span>
+            <span className={styles.authorRole}>{(article as any).authorBio || 'Ponz Academy 認定講師'}</span>
           </div>
           <div className={styles.date}>
             <Calendar size={16} />

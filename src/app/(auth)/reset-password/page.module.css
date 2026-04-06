@@ -1,0 +1,125 @@
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.centerCard {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2A4D4D;
+  margin: 0;
+}
+
+.errorTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e53e3e;
+  margin: 0;
+}
+
+.description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2A4D4D;
+  box-shadow: 0 0 0 3px rgba(42, 77, 77, 0.1);
+}
+
+.submitBtn {
+  background: #2A4D4D;
+  color: white;
+  padding: 0.85rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.submitBtn:hover {
+  background: #1a3030;
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  background: #fff5f5;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.backLink {
+  color: #2A4D4D;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-top: 1rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #1a3030;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

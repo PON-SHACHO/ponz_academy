@@ -1,4 +1,3 @@
-import 'server-only';
 import { SignJWT, jwtVerify } from 'jose';
 
 const COOKIE_NAME = 'admin_session';

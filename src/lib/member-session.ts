@@ -1,4 +1,3 @@
-import 'server-only';
 import { SignJWT, jwtVerify } from 'jose';
 
 const COOKIE_NAME = 'member_session';
@@ -9,8 +8,9 @@ function getSecretKey(): Uint8Array {
   return new TextEncoder().encode(secret);
 }
 
-export async function createMemberSessionToken(userId: string): Promise<string> {
-  return new SignJWT({ userId, role: 'MEMBER' })
+// role を引数で受け取り、JWT に正しいロールを埋め込む
+export async function createMemberSessionToken(userId: string, role: string = 'MEMBER'): Promise<string> {
+  return new SignJWT({ userId, role })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime(`${SESSION_DURATION_SECONDS}s`)

@@ -46,14 +46,20 @@ export default function EditorForm({ initialPost, categories }: EditorFormProps)
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (field === 'title' && !initialPost) {
        // Auto-generate slug from title if it's a new post
-        const slug = value.toLowerCase()
+        let slug = value.toLowerCase()
            .trim()
            .replace(/[\s\t\n]+/g, '-') // Replace whitespace with hyphen
-           .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF-]/g, '') // Allow Alphanumeric + Japanese (Hiragana, Katakana, Kanji) + Hyphens
+           .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF-]/g, '') // Allow Alphanumeric + Japanese + Hyphens
            .replace(/-+/g, '-') // collapse multiple hyphens
-           .replace(/^-+|-+$/g, '') // trim hyphens
-           .slice(0, 50);
-        setFormData(prev => ({ ...prev, slug }));
+           .replace(/^-+|-+$/g, ''); // trim hyphens
+
+        // Fallback for empty/short slug
+        if (!slug || slug.length < 2) {
+          slug = `post-${Date.now().toString(36)}`;
+        }
+        
+        setFormData(prev => ({ ...prev, [field]: value, slug: slug.slice(0, 100) }));
+        return; // setFormData already called with all updates
     }
   };
 

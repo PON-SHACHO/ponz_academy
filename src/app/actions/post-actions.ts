@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 export async function getPosts(options?: { categorySlug?: string; limit?: number }) {
   try {
     let query = sql`
-      SELECT p.*, c.name as "categoryName", u.name as "authorName"
+      SELECT p.*, c.name as "categoryName", u.name as "authorName", u.bio as "authorBio"
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id
@@ -18,7 +18,7 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
       // In a real app we'd append WHERE or use a better query builder
       // For now, let's just filter by category name for simplicity in this raw SQL example
       const posts = await sql`
-        SELECT p.*, c.name as "categoryName", u.name as "authorName"
+        SELECT p.*, c.name as "categoryName", u.name as "authorName", u.bio as "authorBio"
         FROM "Post" p
         LEFT JOIN "Category" c ON p."categoryId" = c.id
         LEFT JOIN "User" u ON p."authorId" = u.id
@@ -34,7 +34,7 @@ export async function getPosts(options?: { categorySlug?: string; limit?: number
     const limit = options?.limit || 10;
 
     const posts = await sql`
-      SELECT p.*, c.name as "categoryName", u.name as "authorName"
+      SELECT p.*, c.name as "categoryName", u.name as "authorName", u.bio as "authorBio"
       FROM "Post" p
       LEFT JOIN "Category" c ON p."categoryId" = c.id
       LEFT JOIN "User" u ON p."authorId" = u.id

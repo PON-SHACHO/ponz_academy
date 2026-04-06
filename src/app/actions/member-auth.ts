@@ -36,11 +36,12 @@ export async function memberRegister(
     const result = await sql`
       INSERT INTO "User" (id, name, email, password, role, "createdAt", "updatedAt")
       VALUES (gen_random_uuid()::text, ${name}, ${email.toLowerCase()}, ${hashedPassword}, 'MEMBER', NOW(), NOW())
-      RETURNING id
+      RETURNING id, role
     `;
 
     const userId = result[0].id;
-    const token = await createMemberSessionToken(userId);
+    const role = result[0].role as string;
+    const token = await createMemberSessionToken(userId, role);
     const cookieStore = await cookies();
     
     cookieStore.set(MEMBER_COOKIE_NAME, token, getMemberCookieOptions());
@@ -64,8 +65,8 @@ export async function memberLogin(
   }
 
   try {
-    // Find user
-    const users = await sql`SELECT id, password FROM "User" WHERE email = ${email.toLowerCase()} LIMIT 1`;
+    // Find user — fetch role too so JWT has the correct role
+    const users = await sql`SELECT id, password, role FROM "User" WHERE email = ${email.toLowerCase()} LIMIT 1`;
     if (users.length === 0) {
       return { error: 'メールアドレスまたはパスワードが正しくありません。' };
     }
@@ -78,7 +79,7 @@ export async function memberLogin(
       return { error: 'メールアドレスまたはパスワードが正しくありません。' };
     }
 
-    const token = await createMemberSessionToken(user.id);
+    const token = await createMemberSessionToken(user.id as string, user.role as string);
     const cookieStore = await cookies();
     
     cookieStore.set(MEMBER_COOKIE_NAME, token, getMemberCookieOptions());

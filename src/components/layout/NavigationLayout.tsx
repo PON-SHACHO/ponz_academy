@@ -8,6 +8,8 @@ interface NavigationLayoutProps {
   header: React.ReactNode;
 }
 
+import styles from './NavigationLayout.module.css';
+
 export default function NavigationLayout({ children, sidebar, header }: NavigationLayoutProps) {
   const pathname = usePathname();
   
@@ -16,34 +18,20 @@ export default function NavigationLayout({ children, sidebar, header }: Navigati
 
   if (isLoginPage) {
     return (
-      <div className="login-root">
-        <main className="login-content">
+      <div className={styles.loginRoot}>
+        <main className={styles.loginContent}>
           {children}
         </main>
-        <style jsx>{`
-          .login-root {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: hsl(var(--background));
-          }
-          .login-content {
-            width: 100%;
-            max-width: 500px;
-            padding: 2rem;
-          }
-        `}</style>
       </div>
     );
   }
 
   return (
-    <div className="layout-root">
+    <div className={styles.layoutRoot}>
       {sidebar}
-      <div className="main-container">
+      <div className={styles.mainContainer}>
         {header}
-        <main className="content">
+        <main className={styles.content}>
           {children}
         </main>
       </div>

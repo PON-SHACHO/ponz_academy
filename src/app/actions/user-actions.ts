@@ -21,7 +21,10 @@ export async function getUsers() {
       updatedAt: user.updatedAt.toISOString(),
     }));
   } catch (error) {
-    console.error('Failed to fetch users:', error);
+    console.error('Failed to fetch users. Error:', error);
+    if (error instanceof Error) {
+      console.error('Stack:', error.stack);
+    }
     return [];
   }
 }

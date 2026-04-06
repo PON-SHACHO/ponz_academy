@@ -1,0 +1,26 @@
+=== DB FIX SCRIPT ===
+
+Bug 3: Creating PasswordResetToken table...
+  笨・PasswordResetToken table created (or already exists)
+
+Bug 4: Fixing category slugs...
+  笨・"縺吶∋縺ｦ" 竊・slug="all"
+  笨・"雋｡蜍吶・邨悟霧" 竊・slug="finance"
+  笨・"莠ｺ譚占ご謌・ 竊・slug="hr"
+  笨・"繝槭う繝ｳ繝峨そ繝・ヨ" 竊・slug="mindset"
+
+Bug 5: Fixing broken post slug "2"...
+  笞・・ No post with slug="2" found (already fixed?)
+
+=== VERIFICATION ===
+Categories:
+  - "DX繝ｻIT" 竊・slug="dx-it"
+  - "縺吶∋縺ｦ" 竊・slug="all"
+  - "繝槭う繝ｳ繝峨そ繝・ヨ" 竊・slug="mindset"
+  - "莠ｺ譚占ご謌・ 竊・slug="hr"
+  - "雋｡蜍吶・邨悟霧" 竊・slug="finance"
+
+PasswordResetToken columns: expires, createdAt, id, token, email
+笨・No more broken slug="2" posts
+
+=== DONE ===
