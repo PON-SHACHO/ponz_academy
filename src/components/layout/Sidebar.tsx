@@ -1,16 +1,10 @@
 import Link from 'next/link';
 import { 
   Home, 
-  Target, 
-  TrendingUp, 
   Users, 
-  BarChart3, 
   HelpCircle, 
-  Settings,
   LayoutDashboard
 } from 'lucide-react';
-import { cookies } from 'next/headers';
-import { verifyMemberSessionToken, MEMBER_COOKIE_NAME } from '@/lib/member-session';
 import styles from './Sidebar.module.css';
 
 import MemberLogoutButton from '@/components/MemberLogoutButton';
@@ -24,11 +18,11 @@ const adminNavItems = [
   { icon: Users, label: 'Users', href: '/admin/users' },
 ];
 
-export default async function Sidebar() {
-  const cookieStore = await cookies();
-  const token = (await cookieStore).get(MEMBER_COOKIE_NAME)?.value;
-  const session = token ? await verifyMemberSessionToken(token) : null;
-  const isAdmin = session?.role === 'ADMIN';
+interface SidebarProps {
+  isAdmin?: boolean;
+}
+
+export default function Sidebar({ isAdmin }: SidebarProps) {
 
   return (
     <aside className={styles.sidebar}>
