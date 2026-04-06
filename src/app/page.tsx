@@ -57,10 +57,12 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             </Link>
             <p className={styles.featuredSubtitle}>{featuredArticle.subtitle}</p>
             <div className={styles.author}>
-              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${featuredArticle.authorName || 'User'}`} alt={featuredArticle.authorName || 'User'} />
+              <img src={featuredArticle.authorAvatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${featuredArticle.authorName || 'User'}`} alt={featuredArticle.authorName || 'User'} />
               <div>
                 <span className={styles.authorName}>{featuredArticle.authorName || '管理者'}</span>
-                <span className={styles.authorRole}>{(featuredArticle as any).authorBio || 'Ponz Academy 認定講師'}</span>
+                {featuredArticle.authorBio && (
+                  <span className={styles.authorRole}>{featuredArticle.authorBio}</span>
+                )}
               </div>
             </div>
           </div>

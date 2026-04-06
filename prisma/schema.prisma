@@ -15,6 +15,7 @@ model User {
   password  String?  // Hashed password
   role      Role     @default(MEMBER)
   bio       String?  // Profile bio/role
+  avatarUrl String?  // Profile picture URL
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts     Post[]

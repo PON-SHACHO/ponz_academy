@@ -17,6 +17,7 @@ export async function getUsers() {
       email: user.email as string,
       role: user.role as string,
       bio: user.bio as string | null,
+      avatarUrl: user.avatarUrl as string | null,
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     }));
@@ -58,11 +59,14 @@ export async function deleteUser(userId: string) {
   }
 }
 
-export async function updateUserProfile(userId: string, data: { name: string; bio: string }) {
+export async function updateUserProfile(userId: string, data: { name: string; bio: string; avatarUrl?: string }) {
   try {
+    const bioValue = data.bio === '' ? null : data.bio;
+    const avatarValue = data.avatarUrl === '' ? null : data.avatarUrl;
+
     await sql`
       UPDATE "User"
-      SET name = ${data.name}, bio = ${data.bio}, "updatedAt" = NOW()
+      SET name = ${data.name}, bio = ${bioValue}, "avatarUrl" = ${avatarValue}, "updatedAt" = NOW()
       WHERE id = ${userId}
     `;
     revalidatePath('/admin/users');

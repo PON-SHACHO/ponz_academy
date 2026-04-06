@@ -5,6 +5,8 @@ export interface User {
   email: string;
   name?: string | null;
   role: Role;
+  bio?: string | null;
+  avatarUrl?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,4 +34,6 @@ export interface Post {
   // Joined fields
   categoryName?: string;
   authorName?: string;
+  authorBio?: string | null;
+  authorAvatarUrl?: string | null;
 }

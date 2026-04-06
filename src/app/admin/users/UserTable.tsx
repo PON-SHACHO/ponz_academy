@@ -11,6 +11,7 @@ type UserData = {
   email: string;
   role: string;
   bio: string | null;
+  avatarUrl: string | null;
   createdAt: string;
 };
 
@@ -20,6 +21,7 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
   const [editId, setEditId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
+  const [editAvatarUrl, setEditAvatarUrl] = useState('');
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     setLoadingId(userId);
@@ -34,9 +36,9 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
 
   const handleUpdateProfile = async (userId: string) => {
     setLoadingId(userId);
-    const result = await updateUserProfile(userId, { name: editName, bio: editBio });
+    const result = await updateUserProfile(userId, { name: editName, bio: editBio, avatarUrl: editAvatarUrl });
     if (result.success) {
-      setUsers(users.map(u => u.id === userId ? { ...u, name: editName, bio: editBio } : u));
+      setUsers(users.map(u => u.id === userId ? { ...u, name: editName, bio: editBio, avatarUrl: editAvatarUrl } : u));
       setEditId(null);
     } else {
       alert(result.error);
@@ -48,6 +50,7 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
     setEditId(user.id);
     setEditName(user.name || '');
     setEditBio(user.bio || '');
+    setEditAvatarUrl(user.avatarUrl || '');
   };
 
   const handleDelete = async (userId: string) => {
@@ -85,7 +88,11 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
               <td>
                 <div className={styles.identityCell}>
                   <div className={`${styles.avatar} ${user.role === 'ADMIN' ? styles.avatarAdmin : ''}`}>
-                    {getInitial(user.name, user.email)}
+                    {user.avatarUrl ? (
+                       <img src={user.avatarUrl} alt="" className={styles.avatarImg} />
+                    ) : (
+                      getInitial(user.name, user.email)
+                    )}
                   </div>
                   {editId === user.id ? (
                     <div className={styles.editFields}>
@@ -100,6 +107,12 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
                         value={editBio}
                         onChange={(e) => setEditBio(e.target.value)}
                         placeholder="肩書き/バイオを入力"
+                      />
+                      <input 
+                        className={styles.editInput}
+                        value={editAvatarUrl}
+                        onChange={(e) => setEditAvatarUrl(e.target.value)}
+                        placeholder="アバター画像URLまたは種別"
                       />
                     </div>
                   ) : (
