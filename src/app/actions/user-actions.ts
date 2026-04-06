@@ -2,11 +2,12 @@
 
 import { sql } from '@/lib/db-neon';
 import { revalidatePath } from 'next/cache';
+import { put } from '@vercel/blob';
 
 export async function getUsers() {
   try {
     const users = await sql`
-      SELECT id, name, email, role, bio, "createdAt", "updatedAt"
+      SELECT id, name, email, role, bio, "avatarUrl", "createdAt", "updatedAt"
       FROM "User"
       ORDER BY "createdAt" ASC
     `;
@@ -75,6 +76,24 @@ export async function updateUserProfile(userId: string, data: { name: string; bi
   } catch (error) {
     console.error('Failed to update profile:', error);
     return { success: false, error: 'プロフィールの更新に失敗しました。' };
+  }
+}
+
+export async function uploadAvatarAction(formData: FormData) {
+  try {
+    const file = formData.get('file') as File;
+    if (!file) {
+      return { success: false, error: 'ファイルがありません。' };
+    }
+
+    const blob = await put(`avatars/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+    });
+
+    return { success: true, url: blob.url };
+  } catch (error) {
+    console.error('Failed to upload avatar:', error);
+    return { success: false, error: '画像のアップロードに失敗しました。' };
   }
 }
 

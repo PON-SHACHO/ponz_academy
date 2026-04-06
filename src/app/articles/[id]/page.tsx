@@ -1,6 +1,7 @@
 import { getPostByIdOrSlug, getPosts } from '@/app/actions/post-actions';
 import styles from './page.module.css';
 import { Clock, Calendar, ChevronLeft } from 'lucide-react';
+import { formatDate } from '@/lib/date-utils';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
@@ -51,7 +52,7 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
           </div>
           <div className={styles.date}>
             <Calendar size={16} />
-            <span>2024.03.31</span>
+            <span>{formatDate(article.createdAt)}</span>
           </div>
         </div>
       </header>

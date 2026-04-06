@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { updateUserRole, deleteUser, updateUserProfile } from '@/app/actions/user-actions';
-import { Trash2, Loader2, Edit3, Check, X } from 'lucide-react';
+import { updateUserRole, deleteUser, updateUserProfile, uploadAvatarAction } from '@/app/actions/user-actions';
+import { Trash2, Loader2, Edit3, Check, X, Upload, Image as ImageIcon } from 'lucide-react';
 import styles from './page.module.css';
 
 type UserData = {
@@ -22,6 +22,7 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
   const [editAvatarUrl, setEditAvatarUrl] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     setLoadingId(userId);
@@ -66,6 +67,23 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
     setLoadingId(null);
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const result = await uploadAvatarAction(formData);
+    if (result.success && result.url) {
+      setEditAvatarUrl(result.url);
+    } else {
+      alert(result.error || 'アップロードに失敗しました');
+    }
+    setIsUploading(false);
+  };
+
   const getInitial = (name: string | null, email: string) => {
     if (name) return name.charAt(0).toUpperCase();
     return email.charAt(0).toUpperCase();
@@ -108,12 +126,24 @@ export default function UserTable({ initialUsers }: { initialUsers: UserData[] }
                         onChange={(e) => setEditBio(e.target.value)}
                         placeholder="肩書き/バイオを入力"
                       />
-                      <input 
-                        className={styles.editInput}
-                        value={editAvatarUrl}
-                        onChange={(e) => setEditAvatarUrl(e.target.value)}
-                        placeholder="アバター画像URLまたは種別"
-                      />
+                      <div className={styles.avatarInputGroup}>
+                        <input 
+                          className={styles.editInput}
+                          value={editAvatarUrl}
+                          onChange={(e) => setEditAvatarUrl(e.target.value)}
+                          placeholder="画像URLまたは種別"
+                        />
+                        <label className={styles.uploadLabel}>
+                          {isUploading ? <Loader2 size={16} className={styles.spin} /> : <Upload size={16} />}
+                          <input 
+                            type="file" 
+                            className={styles.fileInput} 
+                            accept="image/*"
+                            onChange={handleFileUpload}
+                            disabled={isUploading}
+                          />
+                        </label>
+                      </div>
                     </div>
                   ) : (
                     <div>

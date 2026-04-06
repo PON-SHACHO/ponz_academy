@@ -1,6 +1,7 @@
 import { getPosts, getCategories } from '@/app/actions/post-actions';
 import styles from './page.module.css';
-import { Bookmark, ChevronRight } from 'lucide-react';
+import { Bookmark, ChevronRight, Clock } from 'lucide-react';
+import { formatDate, formatRelativeTime } from '@/lib/date-utils';
 import Link from 'next/link';
 
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
@@ -109,7 +110,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
               <div className={styles.latestContent}>
                 <div className={styles.itemMeta}>
                   <span className={styles.itemCat}>{item.categoryName}</span>
-                  <span className={styles.itemDate}>2時間前</span>
+                  <span className={styles.itemDate}>{formatRelativeTime(item.createdAt)}</span>
                 </div>
                 <Link href={`/articles/${item.slug}`}>
                   <h3>{item.title}</h3>

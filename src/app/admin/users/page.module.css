@@ -182,6 +182,37 @@
   box-shadow: 0 0 0 2px rgba(253, 45, 120, 0.1);
 }
 
+.avatarInputGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.uploadLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.uploadLabel:hover {
+  background-color: #edf2f7;
+  color: #fd2d78;
+  border-color: #fd2d78;
+}
+
+.fileInput {
+  display: none;
+}
+
 .userName {
   font-weight: 700;
   color: #1a202c;
