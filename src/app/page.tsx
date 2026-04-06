@@ -30,8 +30,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   return (
     <div className={styles.dashboard}>
       <header className={styles.pageHeader}>
-        <h1 className={styles.title}>院長のためのクリニカル・キュレーション</h1>
-        <p className={styles.subtitle}>2024年のクリニック経営をアップデートする、実力派講師陣による最新ナレッジベース。</p>
+        <h1 className={styles.title}>整体院の集客とリピートの学校</h1>
+        <p className={styles.subtitle}>整体院経営をアップデートするノウハウとマインドの最新ナレッジベース</p>
       </header>
 
       <div className={styles.categories}>

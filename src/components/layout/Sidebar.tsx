@@ -28,7 +28,7 @@ export default function Sidebar({ isAdmin }: SidebarProps) {
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
         <Link href="/">
-          <span className={styles.logoText}>Ponzu Academy</span>
+          <span className={styles.logoText}>Pon'z Academy</span>
         </Link>
       </div>
 

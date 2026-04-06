@@ -93,7 +93,13 @@ export async function getPostByIdOrSlug(idOrSlug: string) {
 
 export async function getCategories() {
   try {
-    const categories = await sql`SELECT * FROM "Category" ORDER BY name ASC`;
+    const categories = await sql`
+      SELECT DISTINCT c.* 
+      FROM "Category" c
+      JOIN "Post" p ON p."categoryId" = c.id
+      WHERE p.published = true
+      ORDER BY c.name ASC
+    `;
     return categories as unknown as Category[];
   } catch (error) {
     console.error('Failed to fetch categories:', error);
