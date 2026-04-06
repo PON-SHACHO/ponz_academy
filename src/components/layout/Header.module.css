@@ -115,15 +115,15 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 15px); /* increased gap */
+  top: calc(100% + 15px);
   right: 0;
   width: 320px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15); /* deeper shadow */
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
   border: 1px solid #edf2f7;
   overflow: hidden;
-  z-index: 999; /* high z-index */
+  z-index: 999;
   animation: slideUp 0.2s ease-out;
 }
 
@@ -189,6 +189,7 @@
   color: #2d3748;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

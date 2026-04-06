@@ -109,10 +109,6 @@ export default function Header() {
             <div className={styles.dropdown}>
               <div className={styles.dropdownHeader}>アカウント設定</div>
               <div className={styles.menuList}>
-                <Link href="/admin/users" className={styles.menuItem} onClick={() => setShowSettings(false)}>
-                   <UserIcon size={18} />
-                   <span>プロフィール編集</span>
-                </Link>
                 <Link href="/settings/password" className={styles.menuItem} onClick={() => setShowSettings(false)}>
                    <Key size={18} />
                    <span>パスワード変更</span>

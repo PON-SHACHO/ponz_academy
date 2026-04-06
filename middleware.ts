@@ -18,17 +18,27 @@ export async function middleware(request: NextRequest) {
   // --- Admin Area Protection ---
   if (pathname.startsWith('/admin')) {
     if (pathname === '/admin/login') {
-      return NextResponse.next(); // Admin login is public
+      return NextResponse.next();
     }
     
-    const adminToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
-    const isAdminAuthenticated = adminToken ? await verifyAdminSessionToken(adminToken) : false;
+    // Check for standard member session with admin role FIRST
+    const memberToken = request.cookies.get(MEMBER_COOKIE_NAME)?.value;
+    const memberSession = memberToken ? await verifyMemberSessionToken(memberToken) : null;
+    
+    if (memberSession?.role === 'ADMIN') {
+      return NextResponse.next();
+    }
 
-    if (!isAdminAuthenticated) {
+    // Check for legacy/global admin session
+    const adminToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+    const isLegacyAdmin = adminToken ? await verifyAdminSessionToken(adminToken) : false;
+
+    if (!isLegacyAdmin) {
       const url = request.nextUrl.clone();
       url.pathname = '/admin/login';
       return NextResponse.redirect(url);
     }
+    
     return NextResponse.next();
   }
 
