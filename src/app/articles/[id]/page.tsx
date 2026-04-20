@@ -5,6 +5,9 @@ import { formatDate } from '@/lib/date-utils';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
+import { getPostThumbnail, getYouTubeId } from '@/lib/video-utils';
+
+
 
 export default async function ArticleDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -14,6 +17,25 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
   if (!article) {
     notFound();
   }
+
+  const videoUrlsRaw = article.videoUrl;
+  const videoSections = await (async () => {
+    if (!videoUrlsRaw) return [];
+    try {
+      const parsed = typeof videoUrlsRaw === 'string' ? JSON.parse(videoUrlsRaw) : videoUrlsRaw;
+      const items = Array.isArray(parsed) ? parsed : [videoUrlsRaw];
+      
+      return Promise.all(items.map(async (item) => {
+        const section = typeof item === 'string' ? { url: item, content: '' } : item;
+        const videoId = getYouTubeId(section.url);
+        const html = section.content ? await marked.parse(section.content) : '';
+        return { ...section, videoId, html };
+      }));
+    } catch {
+      const videoId = getYouTubeId(videoUrlsRaw as string);
+      return [{ url: videoUrlsRaw as string, content: '', videoId, html: '' }];
+    }
+  })();
 
   // Smart Hero Image: If article.coverImage is missing, try to find the first image in markdown
   const imageMatch = article.content.match(/!\[.*?\]\((.*?)\)/);
@@ -56,8 +78,39 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
           </div>
         </div>
       </header>
+      
+      {videoSections.length > 0 && (
+        <div className={styles.sectionsWrapper}>
+          {videoSections.map((section, index) => (
+            <div key={index} className={styles.videoSection}>
+              {section.title && (
+                <h2 className={styles.sectionTitle}>{section.title}</h2>
+              )}
+              {section.videoId && (
+                <div className={styles.videoContainer}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${section.videoId}`}
+                    title={section.title || `${article.title} - Video ${index + 1}`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+              {section.html && (
+                <div 
+                  className={styles.sectionContent} 
+                  dangerouslySetInnerHTML={{ __html: section.html }} 
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
-      {heroImage && (
+      {heroImage && videoSections.every(s => !s.videoId) && (
         <div className={styles.heroImage}>
           <img src={heroImage} alt={article.title} />
         </div>
@@ -83,7 +136,7 @@ export default async function ArticleDetail({ params }: { params: Promise<{ id: 
           {recommendations.map((item) => (
             <div key={item.id} className={styles.recCard}>
               <div className={styles.recImage}>
-                <img src={item.coverImage || ''} alt={item.title} />
+                <img src={getPostThumbnail(item)} alt={item.title} />
               </div>
               <div className={styles.recContent}>
                 <span className={styles.smallCat}>{item.categoryName}</span>

@@ -17,6 +17,12 @@ export interface Category {
   slug: string;
 }
 
+export interface VideoSection {
+  title: string;
+  url: string;
+  content: string;
+}
+
 export interface Post {
   id: string;
   title: string;
@@ -24,6 +30,7 @@ export interface Post {
   subtitle?: string | null;
   content: string;
   coverImage?: string | null;
+  videoUrl?: string | string[] | VideoSection[] | null;
   readingTime?: string | null;
   published: boolean;
   authorId: string;

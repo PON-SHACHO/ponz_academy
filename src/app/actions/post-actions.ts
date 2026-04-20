@@ -93,14 +93,27 @@ export async function getPostByIdOrSlug(idOrSlug: string) {
 
 export async function getCategories() {
   try {
-    const categories = await sql`
-      SELECT DISTINCT c.* 
-      FROM "Category" c
-      JOIN "Post" p ON p."categoryId" = c.id
-      WHERE p.published = true
-      ORDER BY c.name ASC
-    `;
-    return categories as unknown as Category[];
+    let categories = await sql`
+      SELECT * 
+      FROM "Category"
+      ORDER BY name ASC
+    ` as unknown as Category[];
+
+    // 「動画」カテゴリーがない場合は自動作成
+    if (!categories.find(c => c.name === '動画')) {
+      await sql`
+        INSERT INTO "Category" (id, name, slug)
+        VALUES (gen_random_uuid()::text, '動画', 'video')
+      `;
+      // 再取得
+      categories = await sql`
+        SELECT * 
+        FROM "Category"
+        ORDER BY name ASC
+      ` as unknown as Category[];
+    }
+
+    return categories;
   } catch (error) {
     console.error('Failed to fetch categories:', error);
     return [];
@@ -109,14 +122,30 @@ export async function getCategories() {
 
 export async function savePost(data: Partial<Post>) {
   try {
-    const { id, title, slug, subtitle, content, coverImage, readingTime, categoryId } = data;
+    // DB 互換性維持のための緊急処理: videoUrl カラムが存在することを確認
+    try {
+      await sql`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "videoUrl" TEXT`;
+    } catch (e) {
+      // 既に存在するか、名前の不一致がある場合
+      try {
+        await sql`ALTER TABLE "Post" RENAME COLUMN "videoUrls" TO "videoUrl"`;
+      } catch (e2) {
+        // すでに singular になっているか、 plural がない場合は無視
+      }
+    }
+
+    const { id, title, slug, subtitle, content, coverImage, videoUrl, readingTime, categoryId } = data;
     
+    // Ensure videoUrl (array in code) is stored as a JSON string in DB
+    const videoUrlStr = Array.isArray(videoUrl) ? JSON.stringify(videoUrl) : videoUrl;
+
     if (id) {
       // Update
       await sql`
         UPDATE "Post"
         SET title = ${title}, slug = ${slug}, subtitle = ${subtitle}, 
             content = ${content}, "coverImage" = ${coverImage}, 
+            "videoUrl" = ${videoUrlStr},
             "readingTime" = ${readingTime}, "categoryId" = ${categoryId},
             "updatedAt" = NOW()
         WHERE id = ${id}
@@ -124,8 +153,8 @@ export async function savePost(data: Partial<Post>) {
     } else {
       // Create
       await sql`
-        INSERT INTO "Post" (id, title, slug, subtitle, content, "coverImage", "readingTime", published, "authorId", "categoryId")
-        VALUES (gen_random_uuid()::text, ${title}, ${slug}, ${subtitle}, ${content}, ${coverImage}, ${readingTime}, true, 'admin-id', ${categoryId})
+        INSERT INTO "Post" (id, title, slug, subtitle, content, "coverImage", "videoUrl", "readingTime", published, "authorId", "categoryId")
+        VALUES (gen_random_uuid()::text, ${title}, ${slug}, ${subtitle}, ${content}, ${coverImage}, ${videoUrlStr}, ${readingTime}, true, 'admin-id', ${categoryId})
       `;
     }
     
@@ -147,9 +176,62 @@ export async function deletePost(id: string) {
     
     revalidatePath('/');
     revalidatePath('/admin/posts');
+    revalidatePath('/admin/videos');
     return { success: true };
   } catch (error) {
     console.error(`[DB] Failed to delete post ${id}:`, error);
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+export async function saveCategory(data: { id?: string; name: string; slug?: string }) {
+  try {
+    const { id, name } = data;
+    let slug = data.slug || name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    
+    if (!slug) slug = `category-${Date.now()}`;
+
+    if (id) {
+      await sql`
+        UPDATE "Category"
+        SET name = ${name}, slug = ${slug}
+        WHERE id = ${id}
+      `;
+    } else {
+      await sql`
+        INSERT INTO "Category" (id, name, slug)
+        VALUES (gen_random_uuid()::text, ${name}, ${slug})
+      `;
+    }
+
+    revalidatePath('/');
+    revalidatePath('/admin/posts');
+    revalidatePath('/admin/categories');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to save category:', error);
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+export async function deleteCategory(id: string) {
+  try {
+    // Check if category has posts
+    const postCount = await sql`
+      SELECT COUNT(*) as count FROM "Post" WHERE "categoryId" = ${id}
+    `;
+    
+    if (parseInt(postCount[0].count) > 0) {
+      return { success: false, error: 'このカテゴリーを使用している記事があるため削除できません。' };
+    }
+
+    await sql`DELETE FROM "Category" WHERE id = ${id}`;
+    
+    revalidatePath('/');
+    revalidatePath('/admin/categories');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to delete category:', error);
     return { success: false, error: (error as Error).message };
   }
 }

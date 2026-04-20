@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FileText, Users } from 'lucide-react';
+import { FileText, Users, Tag, Video } from 'lucide-react';
 import styles from './AdminTabs.module.css';
 
 export default function AdminTabs() {
@@ -12,10 +12,24 @@ export default function AdminTabs() {
     <div className={styles.tabsContainer}>
       <Link 
         href="/admin/posts" 
-        className={`${styles.tab} ${pathname.startsWith('/admin/posts') ? styles.active : ''}`}
+        className={`${styles.tab} ${pathname.startsWith('/admin/posts') && !pathname.includes('/admin/videos') ? styles.active : ''}`}
       >
         <FileText size={18} />
-        <span>Posts Management</span>
+        <span>Post Management</span>
+      </Link>
+      <Link 
+        href="/admin/videos" 
+        className={`${styles.tab} ${pathname.startsWith('/admin/videos') ? styles.active : ''}`}
+      >
+        <Video size={18} />
+        <span>Video Management</span>
+      </Link>
+      <Link 
+        href="/admin/categories" 
+        className={`${styles.tab} ${pathname.startsWith('/admin/categories') ? styles.active : ''}`}
+      >
+        <Tag size={18} />
+        <span>Category Management</span>
       </Link>
       <Link 
         href="/admin/users" 

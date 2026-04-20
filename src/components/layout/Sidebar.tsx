@@ -3,7 +3,8 @@ import {
   Home, 
   Users, 
   HelpCircle, 
-  LayoutDashboard
+  LayoutDashboard,
+  Video
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -11,6 +12,7 @@ import MemberLogoutButton from '@/components/MemberLogoutButton';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/' },
+  { icon: Video, label: '限定動画', href: '/?category=動画' },
 ];
 
 const adminNavItems = [

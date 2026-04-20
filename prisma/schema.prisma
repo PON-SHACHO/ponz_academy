@@ -28,6 +28,7 @@ model Post {
   subtitle    String?
   content     String   // Markdown or JSON
   coverImage  String?
+  videoUrl    String?
   readingTime String?
   published   Boolean  @default(false)
   author      User     @relation(fields: [authorId], references: [id])

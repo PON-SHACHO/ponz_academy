@@ -7,7 +7,8 @@ import DeletePostButton from '@/components/admin/DeletePostButton';
 import AdminTabs from '@/components/admin/AdminTabs';
 
 export default async function AdminPosts() {
-  const posts = await getPosts({ limit: 100 });
+  const allPosts = await getPosts({ limit: 100 });
+  const posts = allPosts.filter(p => !p.videoUrl && p.categoryName !== '動画');
 
   return (
     <div className={styles.adminContainer}>

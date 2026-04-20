@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import { Bookmark, ChevronRight, Clock } from 'lucide-react';
 import { formatDate, formatRelativeTime } from '@/lib/date-utils';
 import Link from 'next/link';
+import { getPostThumbnail } from '@/lib/video-utils';
 
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const { category } = await searchParams;
@@ -49,7 +50,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       {featuredArticle && (
         <section className={styles.featured}>
           <div className={styles.featuredImageWrapper}>
-            <img src={featuredArticle.coverImage || ''} alt={featuredArticle.title} />
+            <img src={getPostThumbnail(featuredArticle)} alt={featuredArticle.title} />
           </div>
           <div className={styles.featuredContent}>
             <span className={styles.badge}>{featuredArticle.categoryName}</span>
@@ -79,7 +80,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           {recommendedContent.map((item) => (
             <div key={item.id} className={styles.recCard}>
               <div className={styles.recImage}>
-                <img src={item.coverImage || ''} alt={item.title} />
+                <img src={getPostThumbnail(item)} alt={item.title} />
                 <span className={styles.catBadgeSmall}>{item.categoryName}</span>
               </div>
               <div className={styles.recContent}>
@@ -105,7 +106,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           {latestArticles.map((item) => (
             <div key={item.id} className={styles.latestItem}>
               <div className={styles.latestImage}>
-                <img src={item.coverImage || ''} alt={item.title} />
+                <img src={getPostThumbnail(item)} alt={item.title} />
               </div>
               <div className={styles.latestContent}>
                 <div className={styles.itemMeta}>
